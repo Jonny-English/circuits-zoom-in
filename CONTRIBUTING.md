@@ -1,31 +1,29 @@
 # Contributing
 
-Thank you for your interest in contributing to this project!
+Thank you for considering a contribution. This project is small and opinionated, but there is plenty of room for it to grow.
 
-## How to Contribute
+## Ways to contribute
 
-### Report Issues
-- Found a bug or have a suggestion? [Open an issue](https://github.com/Jonny-English/circuits-zoom-in/issues).
+**Report problems.** If something in the notebook is wrong — a misattributed claim, a broken cell, a confusing explanation — [open an issue](https://github.com/Jonny-English/circuits-zoom-in/issues). Even a one-sentence description helps.
 
-### Submit Changes
+**Translate.** The notebook currently exists in Chinese and English. If you'd like to translate it into another language, that would extend its reach in a way that no amount of code improvement can.
+
+**Add experiments.** The most natural extensions are deeper circuit analyses (more layers, more models), higher-resolution dataset validation (ImageNet subsets instead of CIFAR-10), and — the big one — a companion tutorial on circuits in Transformer language models.
+
+**Improve visualizations.** The plots work, but they could be clearer, more interactive, or simply more beautiful.
+
+## How to submit changes
+
 1. Fork the repository
 2. Create a feature branch: `git checkout -b my-feature`
 3. Make your changes
-4. Ensure the notebook runs end-to-end: `jupyter nbconvert --execute notebooks/circuits_zoom_in_zh.ipynb`
-5. Commit and push: `git push origin my-feature`
-6. Open a Pull Request
+4. Verify the notebook runs end-to-end: `jupyter nbconvert --execute notebooks/circuits_zoom_in_zh.ipynb`
+5. Push and open a Pull Request
 
-### Contribution Ideas
-- **Translations**: Help translate the notebook into other languages
-- **New experiments**: Add sections exploring additional circuits or models
-- **Visualization improvements**: Better plots, interactive widgets
-- **Dataset upgrades**: Replace CIFAR-10 with higher-resolution datasets (e.g., ImageNet subset)
-- **Transformer circuits**: Extend the tutorial to cover circuits in language models
+## A note on Chinese variable names
 
-## Code Style
-- Keep Chinese variable names in the Chinese notebook (this is a deliberate pedagogical choice)
-- Add clear comments explaining each step
-- Use `matplotlib` for all plots (no external plotting libraries)
+Please keep them. In the Chinese notebook, variables are named in Chinese. In the English notebook, the same Chinese names are preserved with English annotations. This is intentional and should not be "fixed." If you are adding new code to the Chinese notebook, follow the same convention.
 
-## Questions?
-Open an issue and we'll be happy to help.
+## Questions
+
+Open an issue. I will do my best to respond.
