@@ -23,7 +23,8 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          pip install jupyter nbconvert
+          pip install jupyter nbconvert ipykernel
+          python -m ipykernel install --user --name python3
 
       - name: Run Chinese notebook (CI mode)
         env:
@@ -31,6 +32,7 @@ jobs:
         run: |
           jupyter nbconvert --to notebook --execute \
             --ExecutePreprocessor.timeout=600 \
+            --ExecutePreprocessor.kernel_name=python3 \
             notebooks/circuits_zoom_in_zh.ipynb
 
       - name: Run English notebook (CI mode)
@@ -39,4 +41,5 @@ jobs:
         run: |
           jupyter nbconvert --to notebook --execute \
             --ExecutePreprocessor.timeout=600 \
+            --ExecutePreprocessor.kernel_name=python3 \
             notebooks/circuits_zoom_in_en.ipynb
