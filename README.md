@@ -5,63 +5,69 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-> A **bilingual (Chinese/English)** educational notebook reproducing the core experiments from [Olah et al. 2020, *Zoom In: An Introduction to Circuits*](https://distill.pub/2020/circuits/zoom-in/).
-
 <p align="center">
   <img src="figures/feature_viz_grid.png" width="45%" alt="Feature visualization grid"/>
   &nbsp;&nbsp;
   <img src="figures/polar_tuning.png" width="45%" alt="Orientation tuning polar plots"/>
 </p>
 <p align="center">
-  <img src="figures/circuit_diagram.png" width="45%" alt="Circuit: edge detectors → curve detector"/>
+  <img src="figures/circuit_diagram.png" width="45%" alt="Circuit: edge detectors to curve detector"/>
   &nbsp;&nbsp;
   <img src="figures/universality_comparison.png" width="45%" alt="Universality: InceptionV1 vs ResNet-18"/>
 </p>
 
-## What You Will Learn
+## What this is about
 
-| Section | Topic | Method |
-|---------|-------|--------|
-| §2 | Feature Visualization | Activation maximization with [lucent](https://github.com/greentfrapp/lucent) |
-| §3 | Dataset Validation | Finding highest-activating real images (CIFAR-10) |
-| §4 | Orientation Tuning | Measuring direction selectivity of curve detectors |
-| §5 | Circuit Analysis | Tracing how curve detectors are computed from upstream edge detectors via weights |
-| §6 | Universality | Cross-architecture comparison (InceptionV1 vs ResNet-18) |
-| §7 | Limitations | Polysemanticity, nonlinear interactions, and connections to current research |
+In 2020, Chris Olah and his collaborators at OpenAI published a paper that changed how many of us think about neural networks. The central argument was deceptively simple: if you look carefully enough at the weights and activations inside a vision model, you will find that individual neurons detect meaningful features, that those neurons wire together into interpretable circuits, and that the same features and circuits appear across entirely different architectures. They called the paper *[Zoom In: An Introduction to Circuits](https://distill.pub/2020/circuits/zoom-in/)*.
 
-## Why This Project
+This repository is my attempt to reproduce those core experiments from scratch, and to do so in a way that is accessible to readers who think and learn in Chinese. Every variable in the code is named in Chinese characters. Every explanation is written first in Chinese, then translated into English. The result is a bilingual tutorial that covers five experiments from the original paper, plus a section on the limitations and open questions that the paper leaves behind.
 
-- **Accessibility**: The first comprehensive **Chinese-language** reproduction of the foundational Circuits paper, serving the world's second-largest ML research community
-- **Pedagogical innovation**: Uses **Chinese variable names** as a deliberate teaching device — forcing conceptual engagement rather than rote code-copying
-- **Zero barrier**: Runs on **CPU** (no GPU required), works in **Google Colab**, takes ~15 minutes end-to-end on a laptop
-- **Interdisciplinary**: The orientation tuning experiment (§4) explicitly connects to **visual neuroscience** (V1 simple cell direction selectivity)
+## What you will learn, and how
 
-## Quick Start
+The notebook walks through six experiments, each building on the last:
+
+| Section | What happens | Why it matters |
+|---------|-------------|----------------|
+| §2 Feature Visualization | We start from a random noise image and iteratively modify it to maximally excite a single neuron, using [lucent](https://github.com/greentfrapp/lucent) for activation maximization. | This is how we ask a neuron: *what are you looking for?* The answer, rendered as an image, is often strikingly recognizable — curves, edges, textures, even fragments of objects. |
+| §3 Dataset Validation | We search a real image dataset (CIFAR-10) for the photographs that most strongly activate the same neuron. | Synthetic optimization images can be misleading. If the real-world images that excite a neuron look similar to the optimized image, we gain confidence that the neuron is detecting a genuine visual pattern, not an artifact of the optimization process. |
+| §4 Orientation Tuning | We generate synthetic arc stimuli at 36 different orientations and measure how the neuron's activation varies with angle, plotted as a polar diagram. | This experiment draws a direct line to visual neuroscience: the curve detectors in InceptionV1 exhibit direction selectivity remarkably similar to simple cells in the V1 area of the primate visual cortex. |
+| §5 Circuit Analysis | We read the weight matrices directly and trace how a curve detector in `mixed3b` is computed as a weighted combination of edge detectors in `mixed3a`. | This is the heart of the circuits hypothesis. A curve is not detected by magic — it is *computed* from upstream edge detectors through learned weights. We visualize both the upstream neurons and their importance distribution. |
+| §6 Universality | We repeat the feature visualization on ResNet-18 — a completely different architecture, trained independently — and compare the results. | If the same kinds of features appear in networks that share nothing but training data, then these features are not architectural accidents. They are something closer to the natural vocabulary of learned visual representations. |
+| §7 Limitations | We discuss what this tutorial does *not* show: polysemanticity, nonlinear interactions, and the gap between vision circuits and the Transformer circuits that dominate current research. | Honest acknowledgment of limitations is not a weakness in a tutorial — it is a signpost for the reader's next steps. |
+
+## Why this project exists
+
+There is a growing community of Chinese-speaking researchers and students who want to understand mechanistic interpretability — the subfield of AI safety concerned with reverse-engineering what neural networks have actually learned. The foundational papers are all in English, the code comments are in English, and the variable names are in English. For a native Chinese speaker, learning the concepts means simultaneously navigating a foreign language and a foreign set of abstractions.
+
+This tutorial takes a different approach. The code uses Chinese variable names — `形状记录` instead of `shape_record`, `钩子列表` instead of `hook_list`, `曲线探测器` instead of `curve_detector`. This is not decoration. When you read `shape_record`, your eyes may glide over it as a familiar programming token without engaging with the concept. When you read `形状记录`, you are forced to think about what a "shape record" actually is. The Chinese names are a pedagogical device: they slow you down in exactly the right way.
+
+The English version of the notebook preserves the Chinese variable names but adds English annotations alongside each one, so non-Chinese speakers can follow along too.
+
+Beyond the language, the tutorial is designed for accessibility in a more practical sense: it runs entirely on CPU, requires no GPU, works in Google Colab with a single click, and completes in about fifteen minutes on a laptop. The barrier to entry is as close to zero as I could make it.
+
+## Quick start
 
 ```bash
-# Clone
 git clone https://github.com/Jonny-English/circuits-zoom-in.git
 cd circuits-zoom-in
-
-# Install dependencies
 pip install -r requirements.txt
 
-# Run (choose your language)
+# Pick your language
 jupyter notebook notebooks/circuits_zoom_in_en.ipynb  # English
 jupyter notebook notebooks/circuits_zoom_in_zh.ipynb  # 中文
 ```
 
-Or just click the **Open in Colab** badge above — no local setup needed.
+Or click the **Open in Colab** badge at the top of this page.
 
-## Project Structure
+## Project structure
 
 ```
 circuits-zoom-in/
 ├── notebooks/
-│   ├── circuits_zoom_in_zh.ipynb   # 中文版 (Chinese)
+│   ├── circuits_zoom_in_zh.ipynb   # Chinese version (中文版)
 │   └── circuits_zoom_in_en.ipynb   # English version
-├── figures/                        # Pre-rendered figures for README
-├── scripts/                        # Utility scripts
+├── figures/                        # Pre-rendered figures for this README
+├── scripts/                        # Figure generation and utilities
 ├── requirements.txt
 ├── pyproject.toml
 ├── CITATION.cff
@@ -69,31 +75,23 @@ circuits-zoom-in/
 └── LICENSE
 ```
 
-## About the Chinese Variable Names
-
-This project deliberately uses Chinese identifiers (e.g., `形状记录` instead of `shape_record`, `钩子列表` instead of `hook_list`). This is not a quirk — it's a pedagogical choice:
-
-1. **Forces conceptual understanding**: Readers must understand *what* a variable represents, not just pattern-match familiar English tokens
-2. **Native-language learning**: Chinese-speaking students engage with ML concepts in their own language
-3. **Fully annotated**: The English notebook keeps Chinese names but adds English comments explaining each one
-
 ## Citation
+
+If you find this tutorial useful in your work, you are welcome to cite it:
 
 ```bibtex
 @software{circuits_zoom_in_tutorial,
-  title = {Circuits: Zoom In — A Hands-On Tutorial},
+  title  = {Circuits: Zoom In — A Hands-On Tutorial},
   author = {Jonny-English},
-  year = {2026},
-  url = {https://github.com/Jonny-English/circuits-zoom-in},
+  year   = {2026},
+  url    = {https://github.com/Jonny-English/circuits-zoom-in},
   license = {MIT}
 }
 ```
 
 ## Acknowledgments
 
-- [Chris Olah](https://colah.github.io/) et al. for the original [Zoom In](https://distill.pub/2020/circuits/zoom-in/) paper
-- The [lucent](https://github.com/greentfrapp/lucent) library maintainers for making feature visualization accessible in PyTorch
-- The [Distill](https://distill.pub/) journal for pioneering clear, interactive ML communication
+This tutorial would not exist without the original [Zoom In](https://distill.pub/2020/circuits/zoom-in/) paper by Chris Olah, Nick Cammarata, Ludwig Schubert, Gabriel Goh, Michael Petrov, and Shan Carter. The [lucent](https://github.com/greentfrapp/lucent) library, maintained by the open-source community, made feature visualization in PyTorch straightforward. And the [Distill](https://distill.pub/) journal — now inactive, but still deeply influential — set the standard for what clear, honest, and visually rich scientific communication can look like.
 
 ## License
 
