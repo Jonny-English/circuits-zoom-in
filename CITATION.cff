@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this tutorial, please cite it as below."
+title: "Circuits: Zoom In — A Hands-On Tutorial"
+type: software
+authors:
+  - name: "Jonny-English"
+license: MIT
+repository-code: "https://github.com/Jonny-English/circuits-zoom-in"
+keywords:
+  - mechanistic interpretability
+  - neural circuits
+  - feature visualization
+  - AI safety education
+references:
+  - type: article
+    authors:
+      - family-names: Olah
+        given-names: Chris
+      - family-names: Cammarata
+        given-names: Nick
+      - family-names: Schubert
+        given-names: Ludwig
+      - family-names: Goh
+        given-names: Gabriel
+      - family-names: Petrov
+        given-names: Michael
+      - family-names: Carter
+        given-names: Shan
+    title: "Zoom In: An Introduction to Circuits"
+    journal: "Distill"
+    year: 2020
+    doi: "10.23915/distill.00024.001"
