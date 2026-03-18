@@ -11,9 +11,20 @@
   <img src="figures/polar_tuning.png" width="45%" alt="Orientation tuning polar plots"/>
 </p>
 <p align="center">
+  <em>Left: "ideal patterns" for 8 neurons — each image is what a neuron most wants to see.</em>
+  &nbsp;&nbsp;
+  <em>Right: orientation tuning of curve detectors — each neuron has a preferred direction.</em>
+</p>
+
+<p align="center">
   <img src="figures/circuit_diagram.png" width="45%" alt="Circuit: edge detectors to curve detector"/>
   &nbsp;&nbsp;
   <img src="figures/universality_comparison.png" width="45%" alt="Universality: InceptionV1 vs ResNet-18"/>
+</p>
+<p align="center">
+  <em>Left: a complete "circuit" — edge detectors combine to compute a curve detector.</em>
+  &nbsp;&nbsp;
+  <em>Right: two different architectures, trained independently, learn similar visual "vocabulary".</em>
 </p>
 
 ## What this is about
@@ -66,6 +77,7 @@ circuits-zoom-in/
 ├── notebooks/
 │   ├── circuits_zoom_in_zh.ipynb   # Chinese version (中文版)
 │   └── circuits_zoom_in_en.ipynb   # English version
+├── utils/                         # Shared utilities (font config, visualization)
 ├── figures/                        # Pre-rendered figures for this README
 ├── scripts/                        # Figure generation and utilities
 ├── requirements.txt
