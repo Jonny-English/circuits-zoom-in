@@ -5,6 +5,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
+---
+
+> *"If you look carefully enough, you'll find that every neuron is trying to tell you something."*
+> — Chris Olah
+
 <p align="center">
   <img src="figures/feature_viz_grid.png" width="45%" alt="Feature visualization grid"/>
   &nbsp;&nbsp;
@@ -26,6 +31,8 @@
   &nbsp;&nbsp;
   <em>Right: two different architectures, trained independently, learn similar visual "vocabulary".</em>
 </p>
+
+---
 
 ## What this is about
 
