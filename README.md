@@ -44,14 +44,14 @@ This repository is my attempt to reproduce those core experiments from scratch, 
 
 The notebook walks through six experiments, each building on the last:
 
-| Section | What happens | Why it matters |
-|---------|-------------|----------------|
-| §2 Feature Visualization | We start from a random noise image and iteratively modify it to maximally excite a single neuron, using [lucent](https://github.com/greentfrapp/lucent) for activation maximization. | This is how we ask a neuron: *what are you looking for?* The answer, rendered as an image, is often strikingly recognizable — curves, edges, textures, even fragments of objects. |
-| §3 Dataset Validation | We search a real image dataset (CIFAR-10) for the photographs that most strongly activate the same neuron. | Synthetic optimization images can be misleading. If the real-world images that excite a neuron look similar to the optimized image, we gain confidence that the neuron is detecting a genuine visual pattern, not an artifact of the optimization process. |
-| §4 Orientation Tuning | We generate synthetic arc stimuli at 36 different orientations and measure how the neuron's activation varies with angle, plotted as a polar diagram. | This experiment draws a direct line to visual neuroscience: the curve detectors in InceptionV1 exhibit direction selectivity remarkably similar to simple cells in the V1 area of the primate visual cortex. |
-| §5 Circuit Analysis | We read the weight matrices directly and trace how a curve detector in `mixed3b` is computed as a weighted combination of edge detectors in `mixed3a`. | This is the heart of the circuits hypothesis. A curve is not detected by magic — it is *computed* from upstream edge detectors through learned weights. We visualize both the upstream neurons and their importance distribution. |
-| §6 Universality | We repeat the feature visualization on ResNet-18 — a completely different architecture, trained independently — and compare the results. | If the same kinds of features appear in networks that share nothing but training data, then these features are not architectural accidents. They are something closer to the natural vocabulary of learned visual representations. |
-| §7 Limitations | We discuss what this tutorial does *not* show: polysemanticity, nonlinear interactions, and the gap between vision circuits and the Transformer circuits that dominate current research. | Honest acknowledgment of limitations is not a weakness in a tutorial — it is a signpost for the reader's next steps. |
+| Experiment | What you will see |
+|-----------|------------------|
+| **§2 Feature Visualization** | Starting from random noise, we use gradient ascent to maximize a neuron's activation — asking it: *what are you looking for?* The answers are strikingly recognizable curves, edges, and textures. |
+| **§3 Dataset Validation** | We search CIFAR-10 for real photos that most excite the same neuron. When they visually match the synthetic image, we gain confidence the neuron detects a genuine visual pattern, not an optimization artifact. |
+| **§4 Orientation Tuning** | We probe the neuron with synthetic arcs at 36 orientations and plot its response as a polar diagram. The result echoes neuroscience directly: InceptionV1's curve detectors show direction selectivity remarkably similar to V1 simple cells in the primate visual cortex. |
+| **§5 Circuit Analysis** | We read the weight matrices to trace how a curve detector is *computed* as a weighted combination of upstream edge detectors. Curves aren't detected by magic — they are built from edges through learned weights. |
+| **§6 Universality** | We repeat the experiment on ResNet-18 — a completely different architecture, trained independently. When networks that share nothing but training data develop the same features, those features are not accidents but the natural vocabulary of vision. |
+| **§7 Limitations** | An honest discussion of what this tutorial does *not* show: polysemanticity, nonlinear interactions, and the gap between vision circuits and Transformer circuits — signposts for your next steps. |
 
 ## Why this project exists
 
