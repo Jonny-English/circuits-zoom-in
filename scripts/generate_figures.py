@@ -2,6 +2,9 @@
 Generate the 4 key figures for README display.
 Run from repo root: python scripts/generate_figures.py
 """
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 import torch
 import torchvision
 import torchvision.transforms as T
@@ -9,32 +12,16 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-import matplotlib.gridspec as gridspec
 from PIL import Image, ImageDraw
-import math, os, warnings
+import math, warnings
 warnings.filterwarnings('ignore')
 
-# ── Font config ──
-_cn_font_candidates = [
-    '/System/Library/Fonts/STHeiti Medium.ttc',
-    '/System/Library/Fonts/PingFang.ttc',
-    '/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc',
-    '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
-    'C:/Windows/Fonts/msyh.ttc',
-]
-for _path in _cn_font_candidates:
-    if os.path.exists(_path):
-        fm.fontManager.addfont(_path)
-        _cn_font_name = fm.FontProperties(fname=_path).get_name()
-        matplotlib.rcParams['font.family'] = 'sans-serif'
-        matplotlib.rcParams['font.sans-serif'] = [_cn_font_name, 'DejaVu Sans']
-        break
-matplotlib.rcParams['axes.unicode_minus'] = False
-
+from utils import setup_chinese_font, show_image_grid
 from lucent.modelzoo import inceptionv1
 from lucent.optvis import render, objectives
 
+# ── Setup ──
+setup_chinese_font()
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 STEPS = 512
 OUT_DIR = 'figures'
@@ -81,21 +68,12 @@ for layer, ch, desc in neurons:
     cache[(layer, ch)] = (img, desc)
     print('done')
 
-cols = 4
-rows = math.ceil(len(neurons) / cols)
-fig, axes = plt.subplots(rows, cols, figsize=(cols * 3.2, rows * 3.2))
-axes = axes.flatten()
-for i, (layer, ch, desc) in enumerate(neurons):
-    img, _ = cache[(layer, ch)]
-    axes[i].imshow(img)
-    axes[i].axis('off')
-    axes[i].set_title(f'{layer}:{ch}\n{desc}', fontsize=8.5)
-for j in range(i + 1, len(axes)):
-    axes[j].axis('off')
-plt.suptitle('Feature Visualization (Activation Maximization)\nShallow → Deep: Simple → Complex', fontsize=12, y=1.01)
-plt.tight_layout()
-plt.savefig(f'{OUT_DIR}/feature_viz_grid.png', dpi=150, bbox_inches='tight')
-plt.close()
+show_image_grid(
+    [cache[(l, c)][0] for l, c, _ in neurons],
+    [f'{l}:{c}\n{d}' for l, c, d in neurons],
+    suptitle='Feature Visualization (Activation Maximization)\nShallow \u2192 Deep: Simple \u2192 Complex',
+    save_path=f'{OUT_DIR}/feature_viz_grid.png',
+)
 print('  => saved feature_viz_grid.png')
 
 # ═══════════════════════════════════════════════════
@@ -181,19 +159,24 @@ for ch in top_indices:
     print('done')
 
 curve_img, _ = cache[('mixed3b', target_ch)]
-total_cols = top_k + 2
-fig, axes = plt.subplots(1, total_cols, figsize=(total_cols * 3.2, 3.5))
+import matplotlib.gridspec as gridspec
+width_ratios = [1]*top_k + [0.4] + [1]  # narrow arrow column
+fig = plt.figure(figsize=((top_k + 1.4) * 3.2, 3.5))
+gs = gridspec.GridSpec(1, top_k + 2, width_ratios=width_ratios, wspace=0.15)
 for i, (ch, img) in enumerate(upstream_imgs):
-    axes[i].imshow(img)
-    axes[i].axis('off')
-    axes[i].set_title(f'Upstream #{i+1}\nmixed3a:{ch}\n(edge detector)', fontsize=8.5)
-axes[top_k].text(0.5, 0.5, 'Weighted\nSum\n-->', ha='center', va='center',
-                 fontsize=13, color='gray', transform=axes[top_k].transAxes)
-axes[top_k].axis('off')
-axes[top_k + 1].imshow(curve_img)
-axes[top_k + 1].axis('off')
-axes[top_k + 1].set_title(f'Target: Curve Detector\nmixed3b:{target_ch}', fontsize=8.5)
-plt.suptitle('Circuit: Edge Detectors (mixed3a) → Curve Detector (mixed3b)', fontsize=11)
+    ax = fig.add_subplot(gs[0, i])
+    ax.imshow(img)
+    ax.axis('off')
+    ax.set_title(f'Upstream #{i+1}\nmixed3a:{ch}\n(edge detector)', fontsize=8.5)
+arrow_ax = fig.add_subplot(gs[0, top_k])
+arrow_ax.text(0.5, 0.5, 'Weighted\nSum\n\u279c', ha='center', va='center',
+              fontsize=13, color='gray', transform=arrow_ax.transAxes)
+arrow_ax.axis('off')
+target_ax = fig.add_subplot(gs[0, top_k + 1])
+target_ax.imshow(curve_img)
+target_ax.axis('off')
+target_ax.set_title(f'Target: Curve Detector\nmixed3b:{target_ch}', fontsize=8.5)
+plt.suptitle('Circuit: Edge Detectors (mixed3a) \u2192 Curve Detector (mixed3b)', fontsize=11)
 plt.tight_layout()
 plt.savefig(f'{OUT_DIR}/circuit_diagram.png', dpi=150, bbox_inches='tight')
 plt.close()
