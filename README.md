@@ -101,7 +101,7 @@ If you find this tutorial useful in your work, you are welcome to cite it:
 ```bibtex
 @software{circuits_zoom_in_tutorial,
   title  = {Circuits: Zoom In — A Hands-On Tutorial},
-  author = {Jonny-English},
+  author = {Silias Li},
   year   = {2026},
   url    = {https://github.com/Jonny-English/circuits-zoom-in},
   license = {MIT}
@@ -115,3 +115,4 @@ This tutorial would not exist without the original [Zoom In](https://distill.pub
 ## License
 
 [MIT](LICENSE)
+
