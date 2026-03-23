@@ -9,7 +9,7 @@
 
 > *"If you look carefully enough, you'll find that every neuron is trying to tell you something."*
 > — Chris Olah
-
+0
 <p align="center">
   <img src="figures/feature_viz_grid.png" width="45%" alt="Feature visualization grid"/>
   &nbsp;&nbsp;
